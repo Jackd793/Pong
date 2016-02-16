@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Jacks second game</title>
+	<style>
+		* { padding: 0; margin: 0; }
+		canvas { background: #eee; display: block; margin: 0 auto; }
+	</style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="600" height="320"></canvas>
+
+<script>
+
+//delclare all variables
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var x = canvas.width/2;
+var y = canvas.height-30;
+var dx = 2;
+var dy = -2;
+
+var ballRadius = 10
+
+var paddleLeftHeight = 75;
+var paddleLeftWidth = 10;
+var paddleLeftX = 0
+var paddleLeftVariable = 0;
+
+var paddleSpeed = 2;
+
+
+var upPressed = false;
+var downPressed = false;
+var aPressed = false;
+var zPressed = false;
+
+var paddleRightHeight = 75;
+var paddleRightWidth = 10;
+var paddleRightX = canvas.width-paddleRightWidth;
+var paddleRightVariable = 0;
+
+function drawBall() {
+	ctx.beginPath();
+	ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+	ctx.fillStyle = "#0095DD";
+	ctx.fill();
+	ctx.closePath();
+}
+
+function drawLeftPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleLeftX, (canvas.height-paddleLeftHeight)/2 + paddleLeftVariable, paddleLeftWidth, paddleLeftHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawRightPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleRightX, (canvas.height-paddleRightHeight)/2 + paddleRightVariable, paddleRightWidth, paddleRightHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function draw() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	drawBall();
+	x += dx;
+	y += dy;
+	drawLeftPaddle();
+	drawRightPaddle();
+	
+	
+//	console.log('x width ' + x);
+//	console.log('y height ' + y);
+console.log('my variable ' + paddleRightVariable);
+
+	
+if(y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+    dy = -dy;
+}
+		
+if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+    dx = -dx;
+}	
+
+//need to add in here a parameter for game over (ball hitting side)
+		
+if(upPressed && paddleRightVariable < (canvas.height/2 - paddleRightHeight/2)) {
+    paddleRightVariable += paddleSpeed;
+	upPressed = false;
+}
+
+else if(downPressed && paddleRightVariable > -(canvas.height/2 - paddleRightHeight/2)) {
+    paddleRightVariable -= paddleSpeed;
+	downPressed = false;
+}
+
+//other way of limiting how far off the screen the paddle will go, based on speed of paddle
+if (paddleSpeed > Math.abs(canvas.height/2 - paddleRightVariable) ) {
+	paddleRightVariable = (canvas.height/2 - paddleRightHeight/2);
+	}
+
+if(aPressed && apressed == true) {
+    paddleLeftVariable += paddleSpeed;
+}
+else if(zPressed) {
+    paddleLeftVariable -= paddleSpeed;
+}
+
+		}
+		
+	
+	
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+document.addEventListener("keydown", keyDownHandler1, false);
+document.addEventListener("keyup", keyUpHandler1, false);
+
+function keyDownHandler1(e) {
+    if(e.keyCode == 90) {
+        aPressed = true;
+    }
+    else if(e.keyCode == 65) {
+        zPressed = true;
+    }
+}
+
+function keyUpHandler1(e) {
+    if(e.keyCode == 90) {
+        aPressed = false;
+    }
+    else if(e.keyCode == 65) {
+        zPressed = false;
+    }
+}
+	
+function keyDownHandler(e) {
+    if(e.keyCode == 40) {
+        upPressed = true;
+    }
+    else if(e.keyCode == 38) {
+        downPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.keyCode == 40) {
+        upPressed = false;
+    }
+    else if(e.keyCode == 38) {
+        downPressed = false;
+    }
+}
+	
+
+	
+setInterval(draw, 20);
+
+</script>
+
+</body>
+</html>
+
+
+
